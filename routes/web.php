@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,3 +21,17 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/dbconn', function () {
+    return view('dbconn');
+});
+
+Route::post('/create', function(){
+    User::create([
+        'name' => request('name'),
+        'phone' => request('phone'),
+        'email'=> request('email'),
+        'password' => request('password'),
+        'user_type' => request('user_type'),
+    ]);
+    return redirect('/landing');
+});
