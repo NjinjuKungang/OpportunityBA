@@ -12,7 +12,8 @@
 </head>
 <body>
   <div class="mx-auto max-w-xl">
-    <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
+    <form action="">
+      <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
         <div class="grid gap-5 justify-items-left">
             <label class="text-2xl font-semibold">Login with your credentials</label>
            <label class="text-xl">Email:</label>
@@ -26,6 +27,7 @@
             <label class="text-md">Dont't have an account? <a class="text-amber-500 hover:underline" href="/sign-up">Create account</a></label>
         </div>
       </div>
+    </form>
   </div>
 </body>
 </html>
