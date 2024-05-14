@@ -20,6 +20,6 @@
             </label>
         </div>
       </div>
-      @yield('message')
+      @yield('content')
 </body>
 </html>

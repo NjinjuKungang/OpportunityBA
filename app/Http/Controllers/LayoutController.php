@@ -17,8 +17,24 @@ class LayoutController extends Controller
         return view('layouts/sign-up');
     }
 
+    public function createOpportunity()
+    {
+        return view('opportunities/createOpp');
+    }
+
+    public function readOpportunity()
+    {
+        return view('opportunities/readOpp');
+    }
+
+    public function updateOpportunity()
+    {
+        return view('opportunities/updateOpp');
+    }
+
     public function loginPage()
     {
         return view('layouts/login');
     }
+
 }
