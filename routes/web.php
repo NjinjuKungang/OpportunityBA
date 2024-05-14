@@ -16,7 +16,7 @@ Route::get('/login', [LayoutController::class, 'loginPage'])->name('login');
 
 Route::post('/sign-up', [AuthController::class, 'register'] )->name('sign-up.post');
 
-Route::post('/login', [LoginController::class, 'authenticate'] )->name('login.post');
+Route::post('/login', [AuthController::class, 'loginPost'] )->name('login.post');
 
 Route::get('/applicantHome', [AuthController::class, 'applicantPage'] )->name('applicant');
 
