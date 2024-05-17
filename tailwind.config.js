@@ -4,7 +4,11 @@ export default {
     "./resources/**/*.blade.php",
   ],
   theme: {
-    extend: {},
+    extend: {
+      width: {
+        '120': '32rem'
+      }
+    },
     container: {
       center: true,
       padding: {

@@ -56,10 +56,10 @@
                     <span class="text-red-500 italic">*{{$message}}</span>
               @enderror
               <div id="category" style="display: none">
-                <select class="h-10 px-2 rounded-md" >
-                  <option name="category" value="intern" id="intern">Intern</option>
-                  <option name="category" value="volunteer" id="volunteer">Volunteer</option>
-                  <option name="category" value="job" id="job">Job</option>
+                <select name="category" class="h-10 px-2 rounded-md" >
+                  <option  value="Intern">Intern</option>
+                  <option  value="Volunteer">Volunteer</option>
+                  <option  value="Job">Job</option>
               </select>
               </div>
           

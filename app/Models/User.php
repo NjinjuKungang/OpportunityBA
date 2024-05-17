@@ -16,6 +16,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'phone',
@@ -24,6 +27,11 @@ class User extends Authenticatable
         'user_type',
         'catgory',
     ];
+
+
+    public function opportunities(){
+        return $this->hasMany(Opportunity::class, 'user_id', 'id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

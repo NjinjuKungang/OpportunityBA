@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Opportunity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -14,12 +15,16 @@ class AuthController extends Controller
 
     public function applicantPage()
     {
-        return view('layouts/applicantHome');
+        $users = Auth::user();
+        $opportunities = Opportunity::where('category', $users->catgory)->get();
+        return view('layouts/applicantHome', compact('opportunities'));
     }
 
     public function companyPage()
     {
-        return view('layouts/companyHome');
+        $users = Auth::user()->id;
+        $opportunities = Opportunity::where('user_id', $users)->get();
+        return view('layouts/companyHome', compact('opportunities'));
     }
 
     public function logout(Request $request): RedirectResponse {
@@ -61,14 +66,13 @@ class AuthController extends Controller
 
             $user->save();
 
-
             auth()->login($user);
 
             if($user->user_type == 'applicant') {
-                    return redirect(route('applicant'))->with("message", "!!! Your account has been created successfully");
+                    return redirect(route('applicant', Auth::id()))->with("message", "!!! Your account has been created successfully");
                 }
                 else {
-                    return redirect(route('company'))->with("message", "!!! Your account has been created successfully");
+                    return redirect(route('company', Auth::id()))->with("message", "!!! Your account has been created successfully");
                 }
 
         }
@@ -84,10 +88,15 @@ class AuthController extends Controller
             $request->session()->regenerate();
             
             if(Auth()->user()->user_type == 'applicant'){
-                return redirect()->intended('applicant');
+                $id = Auth::user()->id;
+                return redirect()->route('applicant', compact('id'));
             }
-            return redirect()->intended('company');
+            else{
+            $id = Auth::user()->id;
+            return redirect()->route('company', compact('id'));
+            }
         }
+
  
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

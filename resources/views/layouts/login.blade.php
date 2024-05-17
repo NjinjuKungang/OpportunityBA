@@ -20,10 +20,10 @@
         <div class="grid gap-5 justify-items-left">
             <label class="text-2xl font-semibold">Login with your credentials</label>
            <label class="text-xl">Email:</label>
-            <input class="h-10 px-2 italic rounded-md" type="email" size="50" placeholder="email address" name="email" id="">
+            <input class="h-10 px-2 italic rounded-md" type="email" size="50" placeholder="email address" name="email" value="{{old('email')}}">
             <label class="text-xl">Password:</label>
             <input class="h-10 px-2 italic rounded-md" type="password" name="password" id="">        
-            <button type="submit" name="login" class="grid justify-items-center bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold">Login</button>
+            <button type="submit" name="login" size="25" class="grid justify-items-center bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold">Login</button>
             <label class="text-md">Dont't have an account? <a class="text-amber-500 hover:underline" href="/sign-up">Create account</a></label>
         </div>
       </div>
