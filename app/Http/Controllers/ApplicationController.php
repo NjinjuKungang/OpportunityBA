@@ -19,7 +19,7 @@ class ApplicationController extends Controller
         $opportunity = Opportunity::find($id);
 
         if(Auth::check()){
-            return view('opportunity/applyAuth', ['opportunity' => $opportunity]);
+            return view('opportunity/apply-auth', ['opportunity' => $opportunity]);
         }
         else {
             return view('opportunity/apply', ['opportunity' => $opportunity]);

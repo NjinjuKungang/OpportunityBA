@@ -13,20 +13,6 @@ use Illuminate\Validation\Rule;
 class AuthController extends Controller
 {
 
-    public function applicantPage()
-    {
-        $users = Auth::user();
-        $opportunities = Opportunity::where('category', $users->catgory)->get();
-        return view('layouts/applicantHome', compact('opportunities'));
-    }
-
-    public function companyPage()
-    {
-        $users = Auth::user()->id;
-        $opportunities = Opportunity::where('user_id', $users)->get();
-        return view('layouts/companyHome', compact('opportunities'));
-    }
-
     public function logout(Request $request): RedirectResponse {
         
         Auth::logout();

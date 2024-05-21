@@ -11,7 +11,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-  @include('components/navbarLanding')
+  @include('components/navbar-landing')
   <form action="{{ route('edit.post', $opportunity->id)}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')

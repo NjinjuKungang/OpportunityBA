@@ -12,7 +12,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-@include('components/navbarLanding')
+@include('components/navbar-landing')
         
 @extends('components/welcome')
 @section('content')

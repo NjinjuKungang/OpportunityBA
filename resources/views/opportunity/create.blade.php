@@ -11,7 +11,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-  @include('components/navbarLanding')
+  @include('components/navbar-landing')
   <form action="{{route('create.post')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="mx-auto max-w-xl">

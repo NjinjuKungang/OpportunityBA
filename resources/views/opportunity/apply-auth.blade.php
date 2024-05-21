@@ -12,7 +12,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-  @include('components/navbarLanding')
+  @include('components/navbar-landing')
   <form action="{{route('apply.post', $opportunity->id)}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="mx-auto max-w-3xl pt-8 ">

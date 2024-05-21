@@ -11,7 +11,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-@include('components/navbarLanding')
+@include('components/navbar-landing')
 @if (session('status'))
       <div>{{session('status')}}</div>
   @endif

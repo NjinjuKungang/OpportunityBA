@@ -12,7 +12,7 @@
   @vite('resources/css/app.css')
 </head>
 <body>
-  @include('components/navbarLanding')
+  @include('components/navbar-landing')
     <div class="mx-auto max-w-xl pt-10">
       <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
           <div class="grid gap-5 justify-items-left">

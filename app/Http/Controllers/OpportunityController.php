@@ -12,6 +12,62 @@ use Illuminate\Support\Facades\Mail;
 
 class OpportunityController extends Controller
 {
+    public function createPage()
+    {
+        $user = User::get('id');
+        return view('opportunity/create', compact('user'));
+    }
+
+    public function readPage($id)
+    {   
+        $opportunity = Opportunity::find($id);
+        return view('opportunity/read', ['opportunity' => $opportunity]);
+    }
+
+    public function editPage($id)
+    {
+        $opportunity = Opportunity::find($id);
+        // dd($opportunity);
+        return view('opportunity/update', ['opportunity' => $opportunity]);
+    }
+
+    public function updatePage(Request $request, Opportunity $opportunity){
+        // dd($opportunity);
+
+        $request->validate([
+            'title' => ['', 'min:8'],
+            'category' => [''],
+            'image' => ['mimes:png,jpg,jpeg'],
+            'description' => [''],
+        ]);
+
+        if($request->has('image')){
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extension;
+            $path = 'uploads/opportunity/';
+            $file->move($path, $filename);
+
+        }
+    
+        $opportunity->title = $request['title'];
+        // dd($opportunity->title);
+        $opportunity->category = $request['category'];
+        // $opportunity->image = $path.$filename;
+        $opportunity->description = $request['description'];
+
+        $opportunity->save();
+
+        return redirect()->route('company', Auth::id())->with('status', 'Opportunity updated successfully');
+    }
+
+    public function deleteOpp($id){
+        $opportunity = Opportunity::find($id);
+        $opportunity->delete();
+
+        return redirect()->route('company', Auth::id())->with('status', 'Opportunity deleted successfully');
+    }
+        
     public function postOpportunity(Request $request){
         $request->validate([
             'title' => ['required', 'min:8'],
