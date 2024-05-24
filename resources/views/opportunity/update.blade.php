@@ -12,7 +12,7 @@
 </head>
 <body>
   @include('components/navbar-landing')
-  <form action="{{ route('edit.post', $opportunity->id)}}" method="post" enctype="multipart/form-data">
+  <form action="{{ route('pages.update', $opportunity->id)}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
 
@@ -25,7 +25,8 @@
               @error('title')
                     <span class="text-red-500 italic">*{{$message}}</span>
                 @enderror
-              <select name="category" class="h-10 px-2 rounded-md" value="{{ $opportunity->category}}" >
+              <select name="category" class="h-10 px-2 rounded-md" >
+                <option value="" disabled selected>{{ $opportunity->category}}</option>
                 <option  value="Intern">Intern</option>
                 <option  value="Volunteer">Volunteer</option>
                 <option  value="Job">Job</option>

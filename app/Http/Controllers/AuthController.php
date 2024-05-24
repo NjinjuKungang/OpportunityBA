@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Opportunity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -21,49 +20,50 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(route('landing'));
+        return redirect()->route('dashboard.landing');
 
     }
     
-    public function register(Request $request){
-        $request->validate(
-                [
-                'name' => ['required'],
-                'phone' => ['required'],
-                'email'=> ['required', 'email', Rule::unique('users', 'email')],
-                'password' => ['required', 'confirmed', 'min:6'],
-                'user_type' => ['required'],
-                'category' => ['required_if:user_type, applicant'],
-            ]);
+    public function register(Request $request): RedirectResponse 
+    {
+        $validated = $request->validate(
+            [
+            'name' => ['required'],
+            'phone' => ['required'],
+            'email'=> ['required', 'email', Rule::unique('users', 'email')],
+            'password' => ['required', 'confirmed', 'min:6'],
+            'user_type' => ['required'],
+            'category' => ['required_if:user_type, applicant'],
+        ]);
 
             //Hash password
-            $request['password'] = bcrypt($request['password']);
+        $request['password'] = bcrypt($request['password']);
 
 
-            $user = new User();
-            $user->name =$request['name'];
-            $user->phone =$request['phone'];
-            $user->email =$request['email'];
-            $user->password =$request['password'];
-            $user->user_type =$request['user_type'];
-            if($user->user_type == 'applicant') {
-                $user->catgory =$request['category'];
-            }
-
-            $user->save();
-
-            auth()->login($user);
-
-            if($user->user_type == 'applicant') {
-                    return redirect(route('applicant', Auth::id()))->with("message", "!!! Your account has been created successfully");
-                }
-                else {
-                    return redirect(route('company', Auth::id()))->with("message", "!!! Your account has been created successfully");
-                }
-
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->phone = $validated['phone'];
+        $user->email = $validated['email'];
+        $user->password = $validated['password'];
+        $user->user_type = $validated['user_type'];
+        if($user->user_type == 'applicant') {
+            $user->catgory = $validated['category'];
         }
 
-    public function loginPost(Request $request): RedirectResponse
+        $user->save();
+
+        auth()->login($user);
+
+        if($user->user_type == 'applicant') {
+            return redirect()->route('dashboard.applicant')->with("message", "Your account has been created successfully!!!");
+        }
+        else {
+            return redirect()->route('dashboard.company')->with("message", "Your account has been created successfully!!!");
+        }
+
+    }
+
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -74,12 +74,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
             
             if(Auth()->user()->user_type == 'applicant'){
-                $id = Auth::user()->id;
-                return redirect()->route('applicant', compact('id'));
+                return redirect()->route('dashboard.applicant');
             }
             else{
-            $id = Auth::user()->id;
-            return redirect()->route('company', compact('id'));
+                return redirect()->route('dashboard.company');
             }
         }
 
@@ -89,60 +87,6 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-//         public function login(Request $request){
-            
-//             $credentials = $request->validate([
-//                 'email' => ['required', 'email'],
-//                 'password' => ['required'],
-//             ]);
-                    
-//             if(Auth::attempt($credentials)){
-//                 if($user->user_type == 'applicant') {
-                    
-//                     $request->session()->regenerate();
-//                     return redirect()->intended('applicant');
-//                 }
-//                 else {
-//                     $request->session()->regenerate();
-//                     return redirect()->intended('applicant');
-//                 }
-//             }
-        
-//             return back()->withErrors([
-//                 'email' => 'The provided credentials do not match our records.',
-//             ])->onlyInput('email');
-//         }
-        
 }
-
-
-
-
-        // $User = User::create(
-        //     [
-        //     'name' => request('name'),
-        //     'phone' => request('phone'),
-        //     'email'=> request('email'),
-        //     'password' => request('password'),
-        //     'user_type' => request('user_type'),
-        //     'catgory' => request('category'),
-        // ]);
-
-    //     $User->save();
-
-    //     if($User->user_type == 'applicant') {
-    //         return redirect()->route('applicant')->with("message", "!!! Your account has been created successfully");
-    //     }
-    //     else {
-    //         return redirect()->route('company')->with("message", "!!! Your account has been created successfully");
-
-    //     }
-    // }
-
-    
-
-
-
-
 
 

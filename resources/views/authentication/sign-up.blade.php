@@ -14,7 +14,7 @@
 </head>
 <body>
   @include('components/navbar')
-  <form action="{{ route('sign-up.post') }}" method="post">
+  <form action="{{ route('authentication.sign-up') }}" method="post">
     @csrf
     <div class="mx-auto max-w-md">
       <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">

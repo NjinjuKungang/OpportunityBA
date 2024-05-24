@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="bg-gray-200 mx-auto px-10 py-5 flex items-center justify-between">
-        <a class="bg-clip-text text-4xl font-bold text-transparent bg-gradient-to-r from-amber-500 to-violet-500" href="{{route('landing')}}">
+        <a class="bg-clip-text text-4xl font-bold text-transparent bg-gradient-to-r from-amber-500 to-violet-500" href="{{route('dashboard.landing')}}">
             OppBoard
         </a>
         <span class="text-center text-lg font-bold  animate-bounce hover:animate-ping mr-3">An opportunity is all you need!!!</span>
@@ -21,10 +21,10 @@
                 </svg>
             </a>
             @else
-            <a class="grid justify-items-center w-20 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="/sign-up">
+            <a class="grid justify-items-center w-20 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="{{ route('sign-up') }}">
                 <button>Sign Up</button>
             </a>
-            <a class="grid justify-items-center w-20 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="/login">
+            <a class="grid justify-items-center w-20 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="{{ route('login') }}">
                 <button>Login</button>
             </a>
             @endauth

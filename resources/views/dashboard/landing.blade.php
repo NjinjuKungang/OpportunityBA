@@ -33,7 +33,7 @@
                             <a href="{{ route('apply',$item->id) }}">
                                 <button class="bg-blue-500 w-20 h-8 ring-blue-400 ring rounded-full  mx-1.5">Apply</button> 
                             </a>
-                            <a href="{{ route('view',$item->id) }}">
+                            <a href="{{ route('pages.view',$item->id) }}">
                                 <button class="bg-amber-400 w-16 h-8 ring-amber-500 ring rounded-full  mx-1.5">View</button> 
                             </a>
                         </div>

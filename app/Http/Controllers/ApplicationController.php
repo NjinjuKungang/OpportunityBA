@@ -6,16 +6,18 @@ use App\Mail\ApplicationAlert;
 use App\Models\Application;
 use App\Models\Opportunity;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
 
 class ApplicationController extends Controller
 {
 
-    public function getApplication($id){
+    public function getApplication($id): View
+    {
         $opportunity = Opportunity::find($id);
 
         if(Auth::check()){
@@ -25,8 +27,9 @@ class ApplicationController extends Controller
             return view('opportunity/apply', ['opportunity' => $opportunity]);
         }
     }
-    public function postApplication(Request $request, $id){
-        $request->validate([
+    public function postApplication(Request $request, $id): RedirectResponse
+    {
+        $validated = $request->validate([
             'name' => ['nullable', 'min:8'],
             'phone' => ['nullable'],
             'email'=> ['nullable', 'email'],
@@ -52,23 +55,23 @@ class ApplicationController extends Controller
         }
         else {
        
-        $application->name = $request['name'];
-        $application->phone = $request['phone'];
-        $application->email = $request['email'];
+            $application->name = $validated['name'];
+            $application->phone = $validated['phone'];
+            $application->email = $validated['email'];
         }
-        $application->cv = $path.$filename;
-        $application->reason = $request['reason'];
-        $application->opportunity_id = $id;
-        $application->save();
-        
-        $opportunity = Opportunity::find($id);
-        $company = User::find($opportunity->user_id);
-
-        $mailApply = [
-            'applicant' => $application->name,
-            'admin' => $company->name,
-            'opportunity' => $opportunity->name,
+            $application->cv = $path.$filename;
+            $application->reason = $request['reason'];
+            $application->opportunity_id = $id;
+            $application->save();
             
+            $opportunity = Opportunity::find($id);
+            $company = User::find($opportunity->user_id);
+
+            // dd($opportunity->name);
+            $mailApply = [
+                'applicant' => $application->name,
+                'admin' => $company->name,
+                'opportunity' => $opportunity->name,
             
         ];
 
@@ -76,7 +79,7 @@ class ApplicationController extends Controller
 
 
 
-        return redirect()->route('landing')->with('status', 'Opportunity has been applied for!!!');
+        return redirect()->route('dashboard.landing')->with('status', 'Opportunity has been applied for!!!');
 
     }
 }

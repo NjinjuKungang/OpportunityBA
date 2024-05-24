@@ -23,11 +23,15 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $user_type = fake()->randomElement(['applicant', 'Company']);
         return [
             'name' => fake()->name(),
+            'phone' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'user_type' => $user_type,
+            'catgory' => ($user_type === 'applicant') ? fake()->randomElement(['Intern', 'Volunteer', 'Job']) : null,
             'remember_token' => Str::random(10),
         ];
     }

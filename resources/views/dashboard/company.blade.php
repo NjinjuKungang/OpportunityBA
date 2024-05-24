@@ -7,18 +7,18 @@
    <!-- Fonts -->
    <link rel="preconnect" href="https://fonts.bunny.net">
    <link href="https://fonts.bunny.net/css?family=figtre e:400,600&display=swap" rel="stylesheet" /> 
-  
+   <script src="//unpkg.com/alpinejs" defer></script>
+
   @vite('resources/css/app.css')
 </head>
 <body>
 @include('components/navbar-landing')
-@if (session('status'))
-      <div>{{session('status')}}</div>
-  @endif
+@include('components/toast')
+
 @extends('components/welcome')
 @section('content')
     <div class="flex justify-center">
-        <a class="w-32 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="/createOpp">
+        <a class="w-32 bg-amber-600 rounded ring-2 ring-amber-500 hover:ring-gray-600/50 p-2 font-semibold" href="{{ route('pages.create')}}">
             <button>Create Opportunity</button>
         </a>
     </div>
@@ -42,10 +42,10 @@
                     <td class="text-xl font-semibold">{{$item->description}}</td>
                     <td class="text-xl font-semibold">{{$item->category}}</td>
                     <td>
-                        <a  href="{{ route('edit', $item->id) }}">
+                        <a  href="{{ route('pages.edit', $item->id) }}">
                             <button class="bg-violet-500 w-20 h-8 ring-violet-400 ring rounded-full  mx-1.5 my-2">Edit</button> 
                         </a>
-                        <a href="{{ route('delete', $item->id) }}">
+                        <a href="{{ route('pages.destroy', $item->id) }}">
                             <button class="bg-red-600 w-20 h-8 ring-red-500 ring rounded-full  mx-1.5">Delete</button> 
                         </a>
                     </td>

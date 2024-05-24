@@ -4,40 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\Opportunity;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class LayoutController extends Controller
 {
-    public function landingPage()
+    public function landingPage(): View
     {
         $opportunities = Opportunity::get();
-        return view('layouts/landing', compact('opportunities'));
+        return view('dashboard/landing', ['opportunities' => $opportunities]);
     }
 
-    public function signUpPage()
+    public function signUpPage(): View
     {
-        return view('layouts/sign-up');
+        return view('authentication/sign-up');
     }
 
-    public function loginPage()
+    public function loginPage(): View
     {
-        return view('layouts/login');
+        return view('authentication/login');
     }
 
-    public function applicantPage()
+    public function applicantPage(): View
     {
         $users = Auth::user();
         $opportunities = Opportunity::where('category', $users->catgory)->get();
-        return view('layouts/applicant-dashboard', compact('opportunities'));
+        return view('dashboard.applicant', ['opportunities' => $opportunities]);
     }
 
-    public function companyPage()
+    public function companyPage(): View
     {
-        $users = Auth::user()->id;
-        $opportunities = Opportunity::where('user_id', $users)->get();
-        return view('layouts/company-dashboard', compact('opportunities'));
+        $id = Auth::id();
+        $opportunities = Opportunity::where('user_id', $id)->get();
+        return view('dashboard.company', ['opportunities' => $opportunities]);
     }
     
 }

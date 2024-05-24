@@ -13,7 +13,7 @@
 </head>
 <body>
   @include('components/navbar')
-  <form action="{{ route('login.post') }}" method="post">
+  <form action="{{ route('authentication.login') }}" method="post">
     @csrf
     <div class="mx-auto max-w-xl">
       <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
