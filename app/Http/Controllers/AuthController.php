@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -24,20 +25,16 @@ class AuthController extends Controller
 
     }
     
-    public function register(Request $request): RedirectResponse 
+    public function register(StoreUserRequest $request): RedirectResponse 
     {
-        $validated = $request->validate(
-            [
-            'name' => ['required'],
-            'phone' => ['required'],
-            'email'=> ['required', 'email', Rule::unique('users', 'email')],
-            'password' => ['required', 'confirmed', 'min:6'],
-            'user_type' => ['required'],
-            'category' => ['required_if:user_type, applicant'],
-        ]);
+        // The incoming request is valid
 
-            //Hash password
-        $request['password'] = bcrypt($request['password']);
+        // Retrieve the validated input data
+
+        $validated = $request->validated();
+
+        //Hash password
+        $validated['password'] = bcrypt($validated['password']);
 
 
         $user = new User();
@@ -63,12 +60,9 @@ class AuthController extends Controller
 
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(StoreUserRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->safe()->only(['name', 'email']);
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

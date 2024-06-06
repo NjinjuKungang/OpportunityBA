@@ -69,7 +69,7 @@ class OpportunityController extends Controller
     public function readPage($id): View
     {   
         $opportunity = Opportunity::find($id);
-        return view('opportunity/read', ['opportunity' => $opportunity]);
+        return view('opportunity.read', ['id' => $opportunity,'opportunity' => $opportunity]);
     }
 
 
@@ -108,12 +108,13 @@ class OpportunityController extends Controller
     }
 
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id): View
     {
-        $id = Opportunity::find($id);
-        $id->delete();
+        $opportunity = Opportunity::find($id);
+        // dd($opportunity);
+        $opportunity->delete();
 
-        return redirect()->route('dashboard.company')->with('message', 'Opportunity deleted successfully...');
+        return view('dashboard.company', auth::id())->with('message', 'Opportunity deleted successfully...');
     }
         
    

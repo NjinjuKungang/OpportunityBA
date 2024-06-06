@@ -15,8 +15,8 @@
   @include('components/navbar')
   <form action="{{ route('authentication.login') }}" method="post">
     @csrf
-    <div class="mx-auto max-w-xl">
-      <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
+    <div class="mx-auto max-w-xl my-12">
+      <div class="flex justify-center py-16 bg-gray-100 shadow-lg shadow-gray-500">
         <div class="grid gap-5 justify-items-left">
             <label class="text-2xl font-semibold">Login with your credentials</label>
            <label class="text-xl">Email:</label>

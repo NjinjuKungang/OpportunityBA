@@ -21,12 +21,13 @@ class ApplicationController extends Controller
         $opportunity = Opportunity::find($id);
 
         if(Auth::check()){
-            return view('opportunity/apply-auth', ['opportunity' => $opportunity]);
+            return view('opportunity/apply-auth', ['id' => $opportunity,'opportunity' => $opportunity]);
         }
         else {
-            return view('opportunity/apply', ['opportunity' => $opportunity]);
+            return view('opportunity/apply', ['id' => $opportunity,'opportunity' => $opportunity]);
         }
     }
+
     public function postApplication(Request $request, $id): RedirectResponse
     {
         $validated = $request->validate([

@@ -39,14 +39,14 @@ Route::controller(OpportunityController::class)
     ->group(function() {
         Route::get('/create', 'createPage')->name('create');
         Route::post('/create', 'store')->name('store');
-        Route::get('/read', 'readPage')->name('view');
+        Route::get('/read/{id}', 'readPage')->name('view');
         Route::get('/update/{id}', 'editPage')->name('edit');
         Route::put('/update/{id}', 'update')->name('update');
-        Route::get('/delete', 'destroy')->name('destroy');
+        Route::get('/delete/{id}', 'destroy')->name('destroy');
     });
 
 
 
-Route::get('/opportunity/apply', [ApplicationController::class, 'getApplication'])->name('apply');
+Route::get('/opportunity/apply/{id}', [ApplicationController::class, 'getApplication'])->name('apply');
 
-Route::post('/opportunity/apply', [ApplicationController::class, 'postApplication'])->name('apply.post');
+Route::post('/opportunity/apply/{id}', [ApplicationController::class, 'postApplication'])->name('apply.post');

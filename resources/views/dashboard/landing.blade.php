@@ -15,10 +15,10 @@
         
 @extends('components/welcome')
 @section('content')
-    <span class="text-left text-3xl px-10 font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-slate-200">Available Opportunities...</span>
-    <div class="flex flex-wrap justify-around space-y-3 mx-auto">
+    <span class="text-left text-3xl px-10 font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-slate-300">Available Opportunities...</span>
+    <div class="flex flex-wrap justify-stretch space-y-6 mt-4 mb-16">
         @foreach ($opportunities as $item)
-            <div class="mx-auto w-120 px-4 pb-6 pt-2 bg-gray-100 rounded-md shadow-lg shadow-gray-400">
+            <div class="mx-auto w-120 px-4 pb-6 pt-4 bg-gray-200 rounded-md shadow-lg shadow-gray-300">
                 <div class="grid justify-items-center text-2xl p-2 font-semibold">{{ $item->title }}</div>
                 <div class="flex flex-row pt-2 "> 
                     <img class="h-40 w-60 rounded-xl" src="{{ asset($item->image) }}" alt="Img">
@@ -29,7 +29,7 @@
                             <span>Role: </span> 
                         <span> {{ $item->category }}</span>
                         </div>
-                        <div class="pt-4">
+                        <div class="pt-4 inset-x-0 bottom-0">
                             <a href="{{ route('apply',$item->id) }}">
                                 <button class="bg-blue-500 w-20 h-8 ring-blue-400 ring rounded-full  mx-1.5">Apply</button> 
                             </a>

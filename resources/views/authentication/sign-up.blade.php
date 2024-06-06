@@ -16,8 +16,8 @@
   @include('components/navbar')
   <form action="{{ route('authentication.sign-up') }}" method="post">
     @csrf
-    <div class="mx-auto max-w-md">
-      <div class="flex justify-center py-20 bg-gray-100 shadow-lg shadow-amber-200">
+    <div class="mx-auto max-w-xl my-12">
+      <div class="flex justify-center py-16 bg-gray-100 shadow-lg shadow-gray-500">
           <div class="grid gap-3 justify-items-left">
               <label class="text-2xl font-semibold">Let's get you registered</label>
               <label class="text-xl">Name:</label>
@@ -31,7 +31,7 @@
                     <span class="text-red-500 italic">*{{$message}}</span>
                 @enderror
               <label class="text-xl">Email:</label>
-              <input class="h-10 px-2 italic rounded-md" type="email" placeholder="Email address" name="email" value="{{ old('email') }}">
+              <input class="h-10 px-2 italic rounded-md" type="email" size="50" placeholder="Email address" name="email" value="{{ old('email') }}">
               @error('email')
                     <span class="text-red-500 italic">*{{$message}}</span>
                 @enderror
