@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:santum');
+
+Route::get('all-opportunities', [OpportunityController::class, 'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
     // Route::get('profile', [StudentController::class, 'profile']);
-    Route::get('logout', [AuthController::class, 'logout']);
-
     Route::post('create-opportunity', [OpportunityController::class, 'store']);
-    Route::get('list-opportunities', [OpportunityController::class, 'index']);
+    Route::get('list-opportunities', [OpportunityController::class, 'showAll']);
     Route::get('single-opportunity/{id}', [OpportunityController::class, 'show']);
     Route::put('update-opportunity/{id}', [OpportunityController::class, 'update']);
     Route::delete('delete-opportunity/{id}', [OpportunityController::class, 'destroy']);

@@ -46,7 +46,7 @@ Route::controller(OpportunityController::class)
     });
 
 
-
+    
 Route::get('/opportunity/apply/{id}', [ApplicationController::class, 'getApplication'])->name('apply');
 
 Route::post('/opportunity/apply/{id}', [ApplicationController::class, 'postApplication'])->name('apply.post');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreOpportunityRequest;
+use App\Http\Requests\UpdateOpportunityRequest;
 use App\Models\Opportunity;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,9 +54,50 @@ class OpportunityController extends Controller
     }
 
     /**
-     * Display a listing of opportunities.
+     * Displays all opportunities for unauthenticated users.
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $opportunities = Opportunity::query();
+        
+        //  Filter by start and end dates
+        if(!empty($request->startDate) && !empty($request->startDate)) {
+            $opportunities = $opportunities->where('created_at', '>=', $request->startDate)
+                                ->where('created_at', '<=', $request->endDate);
+        }
+
+        // Filter by text search results
+        if(!empty($request->search)){
+            $opportunities = $opportunities->where('title', 'like', '%'. $request->keyword. '%')
+                ->orWhere('description', 'like', '%'. $request->keyword. '%');
+        }
+
+        //  Filter by category
+        if($request->category){
+            $opportunities = $opportunities->where('category', 'like', '%'. $request->category. '%');
+        }
+
+        // Sort opportunities by specific field order
+        if(!empty($request->sortBy) && !empty($request->sortOrder)){
+            $opportunities = $opportunities->orderBy($request->sortBy, $request->sortOrder);
+        }
+
+        // Obtain Opportunities and paginate results
+        $opportunities = $opportunities->paginate(5);
+
+        // Send response
+        return response()->json([
+            'status' => 1,
+            'message' => 'Available Opportunities',
+            'data' => $opportunities
+        ], 200);
+    }
+
+
+    /**
+     * Display a listing of opportunities for authenticated users.
+     */
+    public function showAll(Request $request)
     {
         $user = auth()->user();
 
@@ -64,7 +106,32 @@ class OpportunityController extends Controller
             'user_type' => 'Company',
         ])->exists()){
 
-            $opportunities = Opportunity::where('user_id', $user->id)->get();
+            $opp_query = Opportunity::query()->where('user_id', $user->id);
+
+            // Filter by start and end dates
+            if(!empty($request->startDate) && !empty($request->startDate)) {
+                $opportunities = $opp_query->where('created_at', '>=', $request->startDate)
+                                    ->where('created_at', '<=', $request->endDate);
+            }
+            
+            // Filter by text search results
+            if(!empty($request->search)){
+                $opp_query
+                    ->where('title', 'like', '%'. $request->keyword. '%')
+                    ->orWhere('description', 'like', '%'. $request->keyword. '%');
+                    
+            }
+
+            // Filter by category
+            if($request->category){
+                $opp_query->where('category', 'like', '%'. $request->category. '%');
+            }
+
+            // Obtain all results after checking various queries
+            $opp_query->get();
+
+            // Paginate results
+            $opportunities=$opp_query->paginate(1);
 
             // Send response
             return response()->json([
@@ -78,10 +145,33 @@ class OpportunityController extends Controller
             'user_type' => 'applicant',
         ])->exists()) 
         {
-            $opportunities = Opportunity::where([
-                'category' => $user->catgory
-            ])->get();
-            if ($opportunities == []) {
+            $opp_query = Opportunity::query()->where([ 'category' => $user->catgory ]);
+            
+            // Filter by start and end dates
+            if(!empty($request->startDate) && !empty($request->startDate)) {
+                $opportunities = $opp_query->where('created_at', '>=', $request->startDate)
+                                    ->where('created_at', '<=', $request->endDate);
+            }
+
+            // Filter by text search results
+            if($request->search){
+                $opp_query
+                    ->where('title', 'like', '%'. $request->keyword. '%')
+                    ->orWhere('description', 'like', '%'. $request->keyword. '%');
+            }
+            
+             // Sort opportunities by specific field order
+            if(!empty($request->sortBy) && !empty($request->sortOrder)){
+                $opportunities = $opportunities->orderBy($request->sortBy, $request->sortOrder);
+            }
+            
+            // Obtain all results after checking various queries
+            $opp_query->get();
+
+            // Paginate results
+            $opportunities=$opp_query->paginate(1);
+            
+            if ($opportunities == null) {
                 return response()->json([
                    'status' => 0,
                    'message' => 'No available Opportunities for ' . $user->catgory . ' category'
@@ -95,15 +185,7 @@ class OpportunityController extends Controller
             ], 200);
 
 
-        } else {
-            $opportunities = Opportunity::all();
-
-            // Send response
-            return response()->json([
-               'status' => 1,
-               'message' => 'Available Opportunities'
-            ], 200);
-        }
+        } 
 
     }
     /**
@@ -143,11 +225,34 @@ class OpportunityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOpportunityRequest $request, $id)
     {
-        //
-    }
 
+        $validated = $request->validated();
+
+        if(Opportunity::where('id', $id)->exists()){
+            $opportunity = Opportunity::find($id);
+
+            $opportunity->name = !empty($validated['name']) ? $validated['name'] : $opportunity->name;
+            $opportunity->email = !empty($validated['email']) ? $validated['email'] : $opportunity->email; 
+            $opportunity->phone_no = !empty($validated['phone_no']) ? $validated['phone_no'] : $opportunity->phone_no;
+            $opportunity->gender = !empty($validated['gender']) ? $validated['gender'] : $opportunity->gender;
+            $opportunity->age = !empty($validated['age']) ? $validated['age'] : $opportunity->age;
+        
+            $opportunity->save();
+
+            return response()->json([
+                'status' => 1,
+               'message' => 'Employee updated successfully',
+            ], 203);
+
+        } else {
+            return response()->json([
+            'status' => 0,
+            'message' => 'Employee not found',
+            ], 404);
+        }
+    }
     /**
      * Remove the specified opportunity from storage.
      */
@@ -156,7 +261,7 @@ class OpportunityController extends Controller
         $user_id = auth()->user()->id;
         if(Opportunity::where([
             'id' => $id,
-           'student_id' => $user_id
+           'user_id' => $user_id
           ])->exists())
         {
             $Opportunity = Opportunity::where([
@@ -177,6 +282,8 @@ class OpportunityController extends Controller
             ], 404);
         }
     }
+
+
 }
     
     
